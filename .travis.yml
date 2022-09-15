@@ -1,0 +1,34 @@
+language: node_js
+node_js:
+  - 13
+
+services:
+  - docker
+
+# Pre-testing installs
+install:
+  - echo "nothing needs to be installed"
+
+before_script:
+  - echo "no tests"
+
+script:
+  - echo "Build Process started"
+  - docker --version # print the version for logging
+  - docker build -t udagram-api-feed ./udagram-api-feed #Build the images
+  - docker build -t udagram-api-user ./udagram-api-user
+  - docker build -t udagram-frontend ./udagram-frontend
+  - docker build -t udagram-reverseproxy ./udagram-reverseproxy
+  - docker tag udagram-api-feed sade1/udagram-api-feed:v1
+  - docker tag udagram-api-user sade1/udagram-api-user:v1
+  - docker tag udagram-frontend sade1/udagram-frontend:v1
+  - docker tag udagram-reverseproxy sade1/reverseproxy:v1
+  - echo "Build Process completed successfully"
+# Tasks to perform after the process is successful.
+after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push sade1/udagram-api-feed:v1
+  - docker push sade1/udagram-api-user:v1
+  - docker push sade1/udagram-frontend:v1
+  - docker push sade1/reverseproxy:v1
+  - echo "pushe success"
