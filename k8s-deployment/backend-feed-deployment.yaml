@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-feed
+spec:
+  selector:
+    matchLabels:
+      run: backend-feed
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: backend-feed
+    spec:
+      containers:
+        - name: backend-feed
+          image: sade1/udagram-api-feed:v1
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 1000m
+            requests:
+              cpu: 500m
+          env:
+            - name: POSTGRES_USERNAME
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "postgres123"
+            - name: POSTGRES_HOST
+              value: "database-1.csyshtudp1ic.us-east-1.rds.amazonaws.com"
+            - name: POSTGRES_DB
+              value: "postgres"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: backend-feed
+  name: backend-feed
+spec:
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
+  selector:
+    service: backend-feed
