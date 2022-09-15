@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       run: frontend
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: sade1/udagram-frontend:v3
+          image: sade1/udagram-frontend:v1
           ports:
             - containerPort: 80
           resources:

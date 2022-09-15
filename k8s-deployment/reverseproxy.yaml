@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       run: reverseproxy
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: reverseproxy
-          image: sade1/reverseproxy:v2
+          image: sade1/reverseproxy:v1
           ports:
             - containerPort: 80
           resources:
